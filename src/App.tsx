@@ -1,10 +1,11 @@
+import Header from "./components/Header";
 import ProductsBlock from "./components/ProductsBlock";
 import './styles/index.scss'
 
 function App() {
   return (
     <div className='wrapper'>
-      {/* <Header/> */}
+      <Header/>
       <div className='content'>
         <ProductsBlock/>
       </div>
@@ -14,3 +15,4 @@ function App() {
 }
 
 export default App;
+
