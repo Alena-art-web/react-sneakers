@@ -1,4 +1,5 @@
-@import 'normalize.css';
+@import '~normalize.css';
+
 body {
     font-family: 'Inter';
     font-size: 14px;
@@ -11,4 +12,8 @@ body {
     max-width: 972px;
     margin: 0 auto;
     padding: 0 15px;
+}
+
+a {
+    text-decoration: none;
 }

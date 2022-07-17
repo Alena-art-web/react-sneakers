@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <div className={s.container}>
             <div className={s.title_container}>
-                <img src={logo} alt="Logo" />
+                <Link to='/'><img src={logo} alt="Logo" /></Link>
                 <div className={s.title_block}>
                     <h1>React Sneakers</h1>
                     <p>Магазин лучших кроссовок</p>
@@ -24,7 +24,7 @@ const Header = () => {
                         <Link to='/favorites'><GlobalSvgSelector id='favorites'/></Link>
                         <span>5</span>
                     </div>
-                    <Link to='/user'><GlobalSvgSelector id='user'/></Link>
+                    <Link to='/login'><GlobalSvgSelector id='user'/></Link>
                 </div>
             </div>
         </div>
