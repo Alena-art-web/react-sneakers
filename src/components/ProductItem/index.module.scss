@@ -8,10 +8,10 @@
     padding: 20px 29px 33px 31px;
     position: relative;
     img {
-        width: 133px;
-        height: 112px;
+        width: 148px;
+        height: 135px;
         margin-bottom: 14px;
-        //position: relative;
+        border-radius: 21px;
     }
 
     .price {
@@ -38,10 +38,10 @@
     .btn__like {
         cursor: pointer;
         border: 0;
-        background-color: #fff;
+        //background-color: #fff;
         position: absolute;
         top: 28px;
-        left:28px;
+        right:40px;
     }
     .btn__add{
         cursor: pointer;
