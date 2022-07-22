@@ -1,14 +1,21 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import s from './index.module.scss'
 import { useForm, SubmitHandler } from "react-hook-form"
+import { fetchRegister, selectCurrentUserReg } from '../../redux/slices/register'
+import { useAppDispatch } from '../../redux/store'
+import { useSelector } from 'react-redux'
+import { User } from '../../@types'
 
-type Inputs = {
-    email: string,
-    password: string,
-};
+// type Inputs = {
+//     email: string,
+//     password: string,
+// };
 
 const RegisterBlock = () => {
+    const dispatch = useAppDispatch()
+    const isReg = useSelector(selectCurrentUserReg)
+
     const {
         register,
         handleSubmit,
@@ -18,12 +25,21 @@ const RegisterBlock = () => {
             errors,
             isValid, 
         }
-    } = useForm<Inputs>({
-        mode: 'onBlur'
+    } = useForm<User>({
+        mode: 'onChange',
+        defaultValues: {
+            fullName: 'Sofia',
+            email: 'sofia123@gmail.com',
+            password: 'sofia123'
+        }
     })
 
-    const onSubmit: SubmitHandler<Inputs> = data => {
-        console.log(JSON.stringify(data))
+    if (isReg) {
+        return <Navigate to='/login' />
+    }
+
+    const onSubmit: SubmitHandler<User> = data => {
+        dispatch(fetchRegister(data))
         reset()
     }
 
@@ -39,6 +55,22 @@ const RegisterBlock = () => {
                     </div>
                     <div className={s.input_block}>
                         <form onSubmit={handleSubmit(onSubmit)}>
+                            <div>
+                                <p className={s.input_title}>Fullname</p>
+                                {errors?.fullName &&
+                                    <div className={s.error}>{errors?.fullName?.message || "Error"}</div>
+                                }
+                                <input
+                                    {...register("fullName", {
+                                        required: "Это поле обязательное для заполнения",
+                                        minLength: {
+                                            value:  3,
+                                            message: 'Минимум 3 символа'
+                                        }
+                                        
+                                    })}
+                                />
+                            </div>
                             <div>
                                 <p className={s.input_title}>Email</p>
                                 {errors?.email &&
@@ -75,7 +107,7 @@ const RegisterBlock = () => {
                             </div>
 
                             <div>
-                                <button className={s.button} disabled={!isValid}>Sign In</button>
+                                <button className={s.button} disabled={!isValid}>Sign Up</button>
                             </div>
                         </form>
                     </div>

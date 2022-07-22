@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios';
+import axios from '../../axios';
+import { config } from 'process';
 import { Item } from '../../@types'
 
 
@@ -17,11 +18,12 @@ export const fetchGoods = createAsyncThunk<Item[], Record<string, string>>(
     'goods/fetchGoodsStatus',
     async () => {
         const { data } = await axios.get<Item[]>(
-            `http://localhost:4444/goods`
+            `/goods`//http://localhost:4444
         )
         return data
     }
 )
+
 
 export const goodsSlice = createSlice({
     name: 'goods',

@@ -10,7 +10,7 @@ const Home = () => {
   const { items } = useSelector((state: RootState) => state.goods)
   const dispatch = useAppDispatch()
 
-  const getData = async () => {
+  const getData = () => {
     dispatch(fetchGoods({}))
   }
 

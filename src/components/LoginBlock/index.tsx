@@ -1,33 +1,51 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, Navigate } from 'react-router-dom'
 import s from './index.module.scss'
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useAppDispatch } from '../../redux/store';
+import { fetchUserData, selectCurrentUser } from '../../redux/slices/auth';
+import { useSelector } from 'react-redux';
+import { User } from '../../@types';
 
-type Inputs = {
-    email: string,
-    password: string,
-};
+// type Inputs = {
+//     email: string,
+//     password: string,
+// };
 
 const LoginBlock = () => {
+    const dispatch = useAppDispatch()
+    const isAuth = useSelector(selectCurrentUser)
     const {
         register,
         handleSubmit,
-        watch,
         reset,
         formState: { 
             errors,
             isValid, 
         }
-    } = useForm<Inputs>({
+    } = useForm<User>({
         mode: 'onBlur',
     })
+
+    if (isAuth) {
+        return <Navigate to='/'/>
+    }
     
-    const onSubmit: SubmitHandler<Inputs> = data => {
-        console.log(JSON.stringify(data))
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+
+    const onSubmit: SubmitHandler<User> = async (data) => {
+        const values = await dispatch(fetchUserData(data))
+
+        if ('token' in values.payload) {
+            window.localStorage.setItem('token', values.payload.token)
+        } else {
+            alert('Не удалось авторизоваться!')
+        }
+         
         reset()
     }
 
-    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+    
 
     return (
         <div className={s.page_login}>
@@ -75,7 +93,13 @@ const LoginBlock = () => {
                             </div>
 
                             <div>
-                                <button className={s.button} disabled={!isValid}>Sign In</button>
+                                <button 
+                                    type='submit'
+                                    className={s.button} 
+                                    disabled={!isValid}
+                                >
+                                    Sign In
+                                </button>
                             </div>
                         </form>
                     </div>
