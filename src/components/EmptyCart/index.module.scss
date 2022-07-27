@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    justify-content: center; 
+    margin-top: 110px;  
+}
+
+.block {
+    text-align: center;
+    img {
+        width: 250px;
+    }
+
+    div {
+        font-weight: 600;
+        font-size: 24px;
+        margin:20px 0;
+    }
+
+    button {
+        background: #9DD458;
+        border-radius: 18px;
+        color: #fff;
+        border: 0;
+        padding: 17px 40px 17px 50px;
+        cursor: pointer;
+        position: relative;
+        transition: .2s;
+
+        &::before {
+            content: '';
+            background-image: url('../../assets/img/arrow.svg');
+            background-repeat: no-repeat;
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 18px;
+            left: 20px;
+        }
+
+        &:hover {
+            background-color: #84c138;
+        }
+
+    }
+}

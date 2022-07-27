@@ -48,7 +48,7 @@ export const registerSlice = createSlice({
 
 })
 
-export const selectCurrentUserReg = (state: RootState) => state.reg.data
+export const selectCurrentUserReg = (state: RootState) => Boolean(state.reg.data)
 
 export default registerSlice.reducer
 

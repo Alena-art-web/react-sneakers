@@ -1,19 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/img/logo-header.svg'
-import { logout, selectCurrentUser } from '../../redux/slices/auth'
+import { logout, selectCurrentUser, selectGetUser } from '../../redux/slices/auth'
+import { getCartItem } from '../../redux/slices/cart'
 import { useAppDispatch } from '../../redux/store'
 import GlobalSvgSelector from '../GlobalSvgSelector'
 import s from './index.module.scss'
 
 const Header = () => {
     const isAuth = useSelector(selectCurrentUser)
+    const user = useSelector(selectGetUser)
+    const {items, totalPrice} = useSelector(getCartItem)
     const dispatch = useAppDispatch()
     const onClickLogout = () => {
         dispatch(logout())
         localStorage.removeItem('token')
     }
+    console.log(user);
+    
+
+    useEffect(() => {
+      const json = JSON.stringify(items)
+      localStorage.setItem('cart', json)
+    
+    }, [items])
+    
     return (
         <div className={s.container}>
             <div className={s.title_container}>
@@ -27,13 +39,22 @@ const Header = () => {
                 <div className={s.icon_container}>
                     <div>
                         <Link to='/cart'><GlobalSvgSelector id='cart'/></Link>
-                        <span>5500 грн.</span>
+                        <span>{totalPrice} грн.</span>
                     </div>
                     <div className={s.favorites}>
-                        <Link to='/favorites'><GlobalSvgSelector id='favorites'/></Link>
-                        <span>5</span>
+                        <Link to='/favorites'>
+                            <GlobalSvgSelector id='favorites'/>
+                        </Link>
+                        <span>{items.length}</span>
                     </div>
-                    {isAuth ? <button className={s.logout} onClick={onClickLogout}>Log Out</button> : <Link to='/login'><GlobalSvgSelector id='user'/></Link>}
+                    {isAuth && <button className={s.logout} onClick={onClickLogout}>Log Out</button>}
+                    {isAuth ? 
+                    <Link to='/user'>
+                       <img className={s.avatar}src={user?.avatarUrl}/>               
+                    </Link> : 
+                    <Link to='/login'>
+                        <GlobalSvgSelector id='user'/>
+                    </Link>}
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ import { useAppDispatch } from "./redux/store";
 import { fetchUserGetMe, selectCurrentUser } from "./redux/slices/auth";
 import { useSelector } from "react-redux";
 import NotFound from "./components/NotFound";
+import Cart from "./components/Cart";
 
 function App() {
   const dispatch = useAppDispatch()
@@ -25,6 +26,7 @@ function App() {
       <div className='content'>
         <Routes>
           <Route path='/' element={<Home/>}/>
+          <Route path='/cart' element={<Cart />} />
           <Route path='/login' element={<LoginBlock />} />
           <Route path='/registration' element={<RegisterBlock />} />
           <Route path='*' element={<NotFound />} />

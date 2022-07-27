@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import GlobalSvgSelector from '../GlobalSvgSelector'
 import s from './index.module.scss'
-import img from '../../assets/img/sneakers.jpg'
+import { useAppDispatch } from '../../redux/store'
+import { addItem, CartItem } from '../../redux/slices/cart'
 
 type ProductItemProps = {
   _id: string;
@@ -15,9 +16,25 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
   const [activeLike, setActiveLike] = useState(false)
   const [activeBox, setActiveBox] = useState(false)
 
-  const onClickAdd = () => setActiveButton(!activeButton)
+  const dispatch = useAppDispatch()
+
+
+  const onClickAdd = () => { 
+    const item: CartItem = {
+      _id,
+      name,
+      price,
+      imageUrl,
+      count: 0
+    }
+
+    setActiveButton(!activeButton)
+    dispatch(addItem(item))
+  }
   const onClickFavorites = () => setActiveLike(!activeLike)
-  const onClickBox = () => setActiveBox(!activeBox)
+  const onClickBox = () => {
+    setActiveBox(!activeBox)
+  }
 
   const wrapper = !activeBox ? s.wrapper : s.wrapper_active
   
@@ -37,7 +54,6 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
           <button className={s.btn__add} onClick={onClickAdd}>
             {activeButton ?   <GlobalSvgSelector id='done' /> : <GlobalSvgSelector id='plus' />}
           </button>
-            
         </div>
       </div>
     </div>
