@@ -9,6 +9,8 @@ export const calcTotalPrice = (items: CartItem[]) => {
 export const getCartfromLS = () => {
     const data = localStorage.getItem('cart')
     const items = data ? JSON.parse(data) : []
+    console.log(items);
+    
     const totalPrice = calcTotalPrice(items)
 
     return {

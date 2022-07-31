@@ -3,6 +3,10 @@ import GlobalSvgSelector from '../GlobalSvgSelector'
 import s from './index.module.scss'
 import { useAppDispatch } from '../../redux/store'
 import { addItem, CartItem } from '../../redux/slices/cart'
+import { addtoFav, FavoriteItem } from '../../redux/slices/favorites'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../../redux/slices/auth'
+import { Link, Navigate } from 'react-router-dom'
 
 type ProductItemProps = {
   _id: string;
@@ -17,6 +21,7 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
   const [activeBox, setActiveBox] = useState(false)
 
   const dispatch = useAppDispatch()
+  const isAuth = useSelector(selectCurrentUser)
 
 
   const onClickAdd = () => { 
@@ -31,7 +36,17 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
     setActiveButton(!activeButton)
     dispatch(addItem(item))
   }
-  const onClickFavorites = () => setActiveLike(!activeLike)
+  const onClickFavorites = () => {
+    const item: FavoriteItem = {
+      _id,
+      name,
+      price,
+      imageUrl,
+      count: 0
+    }
+    setActiveLike(!activeLike)
+    dispatch(addtoFav(item))
+  }
   const onClickBox = () => {
     setActiveBox(!activeBox)
   }
@@ -42,9 +57,14 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
     <div className={wrapper} onClick={onClickBox}>
       <div className={s.container}>
         <img src={imageUrl}/>
+        {isAuth ?
         <button className={s.btn__like} onClick={onClickFavorites}>
           {activeLike ? <GlobalSvgSelector id='active-like'/> : <GlobalSvgSelector id='like' />}
+        </button> :
+        <button className={s.btn__like} onClick={onClickFavorites}>
+          <Link to='/login'><GlobalSvgSelector id='like' /></Link>
         </button>
+        }
         <div>{name}</div>
         <div className={s.price}>
           <div>
