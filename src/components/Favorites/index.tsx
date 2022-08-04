@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { FavoriteItem, getFavoriteItem, removeFav } from '../../redux/slices/favorites'
+import { Link } from 'react-router-dom'
+import { clearFav, FavoriteItem, getFavoriteItem, removeFav } from '../../redux/slices/favorites'
 import { useAppDispatch } from '../../redux/store'
-import EmptyCart from '../EmptyCart'
+import EmptyFavorites from '../EmptyFavorites'
 import GlobalSvgSelector from '../GlobalSvgSelector'
 import s from './index.module.scss'
 
@@ -37,25 +38,29 @@ const ItemFav: React.FC<FavoriteItem> = ({ imageUrl, name, price, _id, count }) 
 }
 const Favorites = () => {
   const {data} = useSelector(getFavoriteItem)
- 
+  const dispatch = useAppDispatch()
+
+  const onClickClear = () => {
+    dispatch(clearFav())
+  }
   return (
     <div className={s.container}>
       {data.length > 0 ?
         <div>
           <div className={s.btn_clear}>
-            <button>
-              Очистить корзину
+            <button onClick={onClickClear}>
+              Очистить избранные
             </button>
           </div>
           <ul>
             {data.map(item => <ItemFav key={item._id} {...item} />)}
           </ul>
           <div className={s.price_block}>
-            <div>Total Price:  грн</div>
+            <Link to='/'><button>Вернуться назад</button></Link>
             <button>Оформить заказ</button>
           </div>
         </div> :
-        <EmptyCart />
+        <EmptyFavorites />
       }
     </div>
   )

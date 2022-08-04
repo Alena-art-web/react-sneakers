@@ -44,13 +44,18 @@ const Header = () => {
                         <Link to='/cart'><GlobalSvgSelector id='cart' /></Link>
                         <span>{totalPrice} грн.</span>
                     </div>
-                    <div className={s.favorites}>
-                        <Link to='/favorites'>
-                            <GlobalSvgSelector id='favorites' />
-                        </Link>
-                        <span>{data.length}</span>
+                    {isAuth &&
+                    <div className={s.block_button}>
+                        <div className={s.favorites}>
+                            <Link to='/favorites'>
+                                <GlobalSvgSelector id='favorites' />
+                            </Link>
+                            <span>{data.length}</span>
+                        </div>
+                        
+                        <button className={s.logout} onClick={onClickLogout}>Log Out</button>
                     </div>
-                    {isAuth && <button className={s.logout} onClick={onClickLogout}>Log Out</button>}
+                    }
                     {isAuth ?
                         <Link to='/user'>
                             <img className={s.avatar} src={user?.avatarUrl} />

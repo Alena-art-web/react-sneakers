@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from '../../axios';
-import { config } from 'process';
 import { Item } from '../../@types'
 
 
 type StateType = {
     items: Item[];
-    status: 'loading' | 'success' | 'error'
+    status: 'loading' | 'success' | 'error';
+
 }
 
 const initialState: StateType = {

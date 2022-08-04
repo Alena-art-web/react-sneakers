@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import GlobalSvgSelector from '../GlobalSvgSelector'
 import s from './index.module.scss'
 import { useAppDispatch } from '../../redux/store'
-import { addItem, CartItem } from '../../redux/slices/cart'
-import { addtoFav, FavoriteItem } from '../../redux/slices/favorites'
+import { addItem, CartItem, removeItem } from '../../redux/slices/cart'
+import { addtoFav, FavoriteItem, removeFav } from '../../redux/slices/favorites'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../../redux/slices/auth'
-import { Link, Navigate } from 'react-router-dom'
+import { Link} from 'react-router-dom'
+import { act } from 'react-dom/test-utils'
 
 type ProductItemProps = {
   _id: string;
@@ -15,14 +16,25 @@ type ProductItemProps = {
   price: number
 }
 
-const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) => { // 
+const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) => { 
   const [activeButton, setActiveButton ] = useState(false)
   const [activeLike, setActiveLike] = useState(false)
-  const [activeBox, setActiveBox] = useState(false)
 
   const dispatch = useAppDispatch()
   const isAuth = useSelector(selectCurrentUser)
 
+  useEffect(() => {
+    
+    activeButton && localStorage.setItem('button', JSON.stringify(true))
+    
+  }, [activeButton])
+  
+  
+  
+
+  let ls = localStorage.getItem('button')
+  
+  
 
   const onClickAdd = () => { 
     const item: CartItem = {
@@ -34,8 +46,14 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
     }
 
     setActiveButton(!activeButton)
-    dispatch(addItem(item))
+    if (!activeButton) { 
+      dispatch(addItem(item)) 
+      
+    } else {
+      dispatch(removeItem(item._id))
+    }
   }
+
   const onClickFavorites = () => {
     const item: FavoriteItem = {
       _id,
@@ -44,17 +62,15 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
       imageUrl,
       count: 0
     }
+
     setActiveLike(!activeLike)
-    dispatch(addtoFav(item))
-  }
-  const onClickBox = () => {
-    setActiveBox(!activeBox)
+    !activeLike ? dispatch(addtoFav(item)) : dispatch(removeFav(item._id))
   }
 
-  const wrapper = !activeBox ? s.wrapper : s.wrapper_active
+
   
   return (
-    <div className={wrapper} onClick={onClickBox}>
+    <div className={s.wrapper}>
       <div className={s.container}>
         <img src={imageUrl}/>
         {isAuth ?
@@ -72,8 +88,9 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
             <div className={s.text}>{price} грн.</div>
           </div>
           <button className={s.btn__add} onClick={onClickAdd}>
-            {activeButton ?   <GlobalSvgSelector id='done' /> : <GlobalSvgSelector id='plus' />}
-          </button>
+            {/* ls?? */}
+            {activeButton ?   <GlobalSvgSelector id='done' /> : <GlobalSvgSelector id='plus' />} 
+          </button> 
         </div>
       </div>
     </div>
