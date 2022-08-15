@@ -9,6 +9,8 @@ import s from './index.module.scss'
 
 const Home = () => {
   const { items, status } = useSelector((state: RootState) => state.goods)
+  const favorites = useSelector((state: RootState) => state.favorites.data)
+  const cart = useSelector((state: RootState) => state.cart.items)
   const dispatch = useAppDispatch()
 
   const getData = () => {
@@ -29,7 +31,11 @@ const Home = () => {
             key={item._id}
             className={s.item}
           >
-            <ProductItem {...item} />
+            <ProductItem 
+              {...item} 
+              activeFav={Boolean(favorites.find((data) => data._id === item._id))}
+              activeBtn={Boolean(cart.find((data) => data._id === item._id))}
+            />
           </li>
         )}
       </ul>

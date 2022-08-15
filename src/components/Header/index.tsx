@@ -41,8 +41,10 @@ const Header = () => {
             <div>
                 <div className={s.icon_container}>
                     <div>
-                        <Link to='/cart'><GlobalSvgSelector id='cart' /></Link>
-                        <span>{totalPrice} грн.</span>
+                        <Link to='/cart'>
+                            <GlobalSvgSelector id='cart' />
+                            <span>{totalPrice} грн.</span>
+                        </Link>
                     </div>
                     {isAuth &&
                     <div className={s.block_button}>

@@ -13,28 +13,17 @@ type ProductItemProps = {
   _id: string;
   name: string;
   imageUrl: string;
-  price: number
+  price: number;
+  activeFav: boolean;
+  activeBtn: boolean;
 }
 
-const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) => { 
-  const [activeButton, setActiveButton ] = useState(false)
-  const [activeLike, setActiveLike] = useState(false)
+const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id, activeFav, activeBtn}) => { 
+  const [activeButton, setActiveButton ] = useState(activeBtn)
+  const [activeLike, setActiveLike] = useState(activeFav)
 
   const dispatch = useAppDispatch()
   const isAuth = useSelector(selectCurrentUser)
-
-  useEffect(() => {
-    
-    activeButton && localStorage.setItem('button', JSON.stringify(true))
-    
-  }, [activeButton])
-  
-  
-  
-
-  let ls = localStorage.getItem('button')
-  
-  
 
   const onClickAdd = () => { 
     const item: CartItem = {
@@ -48,7 +37,6 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
     setActiveButton(!activeButton)
     if (!activeButton) { 
       dispatch(addItem(item)) 
-      
     } else {
       dispatch(removeItem(item._id))
     }
@@ -88,8 +76,7 @@ const ProductItem: React.FC<ProductItemProps> = ({imageUrl, name, price, _id}) =
             <div className={s.text}>{price} грн.</div>
           </div>
           <button className={s.btn__add} onClick={onClickAdd}>
-            {/* ls?? */}
-            {activeButton ?   <GlobalSvgSelector id='done' /> : <GlobalSvgSelector id='plus' />} 
+            {activeButton ?  <GlobalSvgSelector id='done' /> : <GlobalSvgSelector id='plus' />} 
           </button> 
         </div>
       </div>
