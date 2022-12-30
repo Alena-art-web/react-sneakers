@@ -60,7 +60,7 @@ const Header = () => {
                     }
                     {isAuth ?
                         <Link to='/user'>
-                            <img className={s.avatar} src={user?.avatarUrl} />
+                            {user?.avatarUrl ? <img className={s.avatar} src={user?.avatarUrl}/> : <GlobalSvgSelector id='user' /> }
                         </Link> :
                         <Link to='/login'>
                             <GlobalSvgSelector id='user' />

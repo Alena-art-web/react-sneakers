@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import NotFound from "./components/NotFound";
 import Cart from "./components/Cart";
 import Favorites from "./components/Favorites";
+import Account from "./components/Account";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/favorites' element={<Favorites />} />
           <Route path='/login' element={<LoginBlock />} />
           <Route path='/registration' element={<RegisterBlock />} />
+          <Route path='/user' element={<Account />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
         

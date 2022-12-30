@@ -5,6 +5,7 @@ import authReducer from "./slices/auth"
 import regReducer from "./slices/register"
 import cartReducer from "./slices/cart"
 import favoritesReducer from "./slices/favorites"
+import filesReducer from "./slices/uploadFile"
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
         reg: regReducer,
         cart: cartReducer,
         favorites: favoritesReducer,
+        uploadFile: filesReducer
     }
 })
 
