@@ -21,5 +21,6 @@ export type File = {
     size: number;
     type: string;
     webkitRelativePath: string;
+    //url: string;
 }
 

@@ -1,47 +1,35 @@
 import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { useDispatch } from 'react-redux';
 import { fetchUploadFile } from '../../redux/slices/uploadFile';
 import GlobalSvgSelector from '../GlobalSvgSelector';
 import s from './index.module.scss'
 import { File } from "../../@types"
 import { useAppDispatch } from '../../redux/store';
+import { fetchUserData, fetchUserGetMe } from '../../redux/slices/auth';
 
 const MyDropzone = () => {
-    const [file, setFile] = useState<File>()
     const dispatch = useAppDispatch()
 
-    const handleUpload = async () => {
-        const data = JSON.stringify(file)
-
-        // const formData = new FormData()
-        // formData.append('file', data, '')
-
+    const onDrop = useCallback(async (acceptedFiles: any) => {
         
-        console.log(1111);
-        
-        
-    }
-
-    const onDrop = useCallback((acceptedFiles: any) => {
-        //console.log(acceptedFiles);
         if (acceptedFiles) {
-            setFile(acceptedFiles[0])
+            console.log(acceptedFiles);
+
+            const formData = new FormData()
+            formData.append('image', acceptedFiles[0])
+            console.log(formData);
+        
+            await dispatch(fetchUploadFile(formData))
         } 
-        if (file) {
-            dispatch(fetchUploadFile(file))
-        }
     }, [])
 
-    console.log(file);
-    
     
     
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
     return (
         <div {...getRootProps()}>
-            <input {...getInputProps()} accept='image/*, .png, .jpg'
+            <input {...getInputProps()} accept='image/*, .png, .jpg' name='image'
             />
             {
                 isDragActive ?

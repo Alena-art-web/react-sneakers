@@ -17,10 +17,10 @@ const initialState: FileState = {
 
 export const fetchUploadFile = createAsyncThunk(
     'file/fetchFileStatus',
-    async (value: File) => {
+    async (value: any) => {
         
         const { data } = await axios.post( 
-            `/upload`, value,
+            `/upload/avatar`, value,
         )
         return data
     }
